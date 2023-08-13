@@ -43,7 +43,7 @@ class TierProgression(models.Model):
 
 class LoyaltyProfile(models.Model):
     customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
-    loyalty_tier = models.ForeignKey(TierProgression, on_delete=models.PROTECT)
+    loyalty_tier = models.ForeignKey(TierProgression, on_delete=models.PROTECT,default=1)
     current_points=models.PositiveIntegerField( default=0)
     maximum_points=models.PositiveIntegerField(default=0)
 
