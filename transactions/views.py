@@ -37,4 +37,18 @@ class CreateTransaction(APIView):
         profile.save()
         serializer=TransactionSerializer(transaction)
         return Response({'status':'success','data':serializer.data},status=status.HTTP_200_OK)
+    
+
+class GetTransactionHistory(APIView):
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticated,)
+    def get(self,request):
+        user=request.user
+        try:
+            customer=Customer.objects.get(user=user)
+        except:
+            return Response({'status':'failed','message':'Invalid user type'},status=status.HTTP_400_BAD_REQUEST)
+        transactions=Transaction.objects.filter(customer=customer).order_by('-date')
+        serializer=TransactionSerializer(transactions,many=True)
+        return Response({'status':'success','data':serializer.data},status=status.HTTP_200_OK)
         
